@@ -124,6 +124,11 @@ This project uses a historical dataset for portfolio analysis. Do not add databa
 - Reconcile the Power BI measures with the SQL outputs and document confirmed findings.
 - Add a Power BI Service link only after public-sharing permissions and data privacy have been checked.
 
+## Contributors
+
+- [Bhupendra Singh Deora](https://github.com/bhupendra272003) — Project owner
+- [Kanishka Gurjar](https://github.com/kanishkagurjar05) — Dashboard collaborator (Power BI dashboard work)
+
 ---
 
 **Author:** [Bhupendra Singh Deora](https://github.com/bhupendra272003)
