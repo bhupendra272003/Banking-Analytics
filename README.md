@@ -2,7 +2,7 @@
 
 An end-to-end banking analytics portfolio project built around the historical Czech Bank (Berka / PKDD'99) dataset. The repository contains a Python cleaning and MySQL-loading pipeline, SQL validation queries, and the Power BI report file.
 
-> **Project status:** The Power BI `.pbix` file is included in this repository. Python source syntax was checked and SQL was reviewed statically. Live MySQL execution and full reconciliation of report measures against SQL are not yet verified.
+> **Project status:** The Power BI `.pbix` file is included in this repository. Python source syntax and regression checks are covered by GitHub Actions. Live MySQL execution and full reconciliation of report measures against SQL are not yet verified.
 
 ## Project at a glance
 
@@ -36,7 +36,12 @@ Banking-Analytics/
 ├── python/
 │   └── berka_to_mysql.py
 ├── sql/
-│   └── Bank_Analytics_Dashboard_Validation.sql
+│   ├── Bank_Analytics_Dashboard_Validation.sql
+│   └── Loan_Outcome_Crosscheck.sql
+├── tests/
+│   └── test_cleaning_helpers.py
+├── .github/workflows/
+│   └── python-tests.yml
 ├── docs/
 │   └── PROJECT_NOTES.md
 ├── .env.example
@@ -87,11 +92,23 @@ python python/berka_to_mysql.py
 
 The loader is designed to be non-destructive by default. It does not drop the database and stops if target tables already exist. Replacing existing tables requires the explicit opt-in setting `BERKA_ALLOW_TABLE_REPLACE=YES`. Back up the project database before any replacement run.
 
-### 6. Run SQL validation
+### 6. Run Python regression tests
+
+The tests cover date parsing and key category mappings without requiring a MySQL connection:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+GitHub Actions runs these checks when relevant Python, test, dependency, or workflow files change. A successful run is required before treating the checks as verified.
+
+### 7. Run SQL validation
 
 Open `sql/Bank_Analytics_Dashboard_Validation.sql` in MySQL Workbench and execute Section 0 first to create the helper views. Then run the relevant page-wise validation queries. The script uses `bank_analytics`; confirm that this is the intended project database before execution.
 
-### 7. Open the Power BI report
+For a focused correction to the loan-outcome-by-duration check, run `sql/Loan_Outcome_Crosscheck.sql` after Section 0. It uses the same status labels produced by the Python loader.
+
+### 8. Open the Power BI report
 
 Download or clone the repository, then open `bank_analytics_Dashboard.pbix` in Power BI Desktop. A public Power BI Service link is not published in this README yet.
 
