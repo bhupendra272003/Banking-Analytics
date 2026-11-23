@@ -95,6 +95,36 @@ The SQL uses loan issue year for the loan-page year filter. The `status_desc` ma
 
 Capture genuine screenshots from Power BI Desktop (or an approved published report) for all seven pages. Use the same default filter state for each capture, remove any personal or connection details, and save them under `docs/screenshots/` with descriptive names such as `01-overview.png`, `02-transactions.png`, and so on. Do not create placeholder screenshots or imply that a public Power BI Service report exists before it is actually published.
 
+
+## Observed dashboard snapshot (uploaded 7-page PDF)
+
+The following figures are transcribed from the uploaded Power BI export in its default "All" filter state. They are a visual snapshot, not a replacement for the SQL definitions above; slicers can change the values.
+
+| Page | Values visible in the export | Useful interpretation |
+|---|---|---|
+| Transactions and Cash Flow (p. 1) | 4.5K accounts; 1.05632M transactions; 3.227bn credits; 3.030bn debits; 5.369K clients; 6.258bn gross transaction amount; 197.151M net cash flow | Credits exceed debits by roughly 197M in the displayed snapshot. Gross transaction amount is the sum of both directions and should not be confused with net flow. |
+| Loan Risk (p. 2) | 682 loans; 103M total loan amount; 151.41K average loan amount; 15.58M bad-loan amount; 11.14% default rate; 15% exposure at risk | The amount-weighted risk share (exposure) is higher than the count-based default rate. Status mix shown: 403 Running - OK, 203 Finished - Paid, 45 Running - In Debt, 31 Finished - Not Paid. |
+| Transactions and Balance (p. 3) | 234.74 average transactions/account; 38.52K average balance; 0.41 cash-withdrawal share; 1.07 credit-to-debit ratio; 197.15M net cash flow; 0.00284 negative-balance transaction share | Cash withdrawals account for about 41% of transaction events in this view. Negative-balance transaction share is about 0.284%, not a customer-level distress rate. Average balance falls from 40.2K in 1994 to 36.4K in 1997 in the displayed yearly trend. |
+| Customers and Districts (p. 4) | 44.80 average client age; 892 cards; 0.0987 gold-card share; 3.79 average unemployment rate; 49.26% female clients; 9.03K average district salary | Customer gender mix is close to even. Salary and unemployment are district-level historical context, not individual client attributes. |
+| Customer Demographics and Segmentation (p. 5) | 5.369K clients; average age 44.80; female share 0.49; male share 0.51; district-level client counts shown | The displayed new-customer, repeat-customer and total-client slices each show about 5K (33.33%). These displayed values appear inconsistent with a mutually exclusive partition of 5.369K clients; do not use them as a validated segmentation result until the DAX and visual aggregation are checked. |
+| Fraud Detection and Suspicious Transaction Analysis (p. 6) | 1.0563M transactions; 288 accounts with negative balance; 76 bad loans; about 5K active accounts; 0.0028 negative-balance transaction share; 0.41 cash-withdrawal share | Treat these as screening and portfolio indicators only. The report does not show confirmed fraud labels in this export. |
+| Retail Bank Overview (p. 7) | 5.369K clients; 4.5K accounts; 38.52K average balance; 682 loans; 11.14% default rate; 197.15M net cash flow | Top district by transactions is Hl.m. Praha (133K), followed by Karvina (36K) and Ostrava - mesto (34K). Regional loan performance varies; the plotted default-rate labels range from about 1.6% to 15.8%. |
+
+### Visual QA notes from the PDF
+
+These are presentation issues visible in the uploaded export and worth fixing before using it as a polished portfolio sample:
+
+1. **Page 1 title formatting:** the heading displays "Net Flow 19715.1%" while the KPI card shows 197.151M. Check the title measure/format string; it likely needs a monetary/amount format rather than a percentage.
+2. **Page 2 title spelling:** "Defualt Rate" is misspelled; change to "Default Rate".
+3. **Page 3 chart title overlap:** "Total Credits and Total by MonthDebits" appears concatenated/overlapped. Rename it to "Total Credits and Total Debits by Year" if the visual is yearly.
+4. **Page 5 segmentation visual:** New Customers, Repeat Customers and Total Clients are each displayed as equal 33.33% slices. Since Total Clients is not a peer segment, replace this pie with separate KPI cards or a correctly defined new-vs-repeat split after validating the DAX.
+5. **Page 4 title context:** header rounds average age to 45 while the card shows 44.80. This is not necessarily wrong, but use consistent precision if desired.
+6. **Page 6 terminology:** keep "Fraud Detection" qualified as suspicious-activity screening unless a verified fraud label/outcome is added.
+
+### Snapshot and data-quality caution
+
+The PDF is a report export with default slicers set to All. Some visuals use rounded K/M/B labels, so sums may differ slightly due to display rounding. The values above should be rechecked after changing Year, Region, Duration, Gender, District, or Transaction Type filters. The export does not expose the underlying DAX, model relationships, or drill-through configuration; this guide does not claim to have independently inspected those internals.
+
 ## Related files
 
 - [Main project README](../README.md)
