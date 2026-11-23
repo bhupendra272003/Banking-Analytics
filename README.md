@@ -115,6 +115,8 @@ Download or clone the repository, then open `bank_analytics_Dashboard.pbix` in P
 
 ## Dashboard documentation
 
+A concise, reviewer-ready [portfolio case study](./docs/PORTFOLIO_CASE_STUDY.md) summarizes the business questions, workflow, default-view dashboard figures, KPI interpretation, validation status, and known limitations. The detailed [dashboard guide](./docs/DASHBOARD_GUIDE.md) documents all seven report pages and their measure/filter caveats.
+
 A page-by-page guide to the report, KPI formulas, slicer/filter caveats, historical-data interpretation, and reviewer walkthrough is available in [docs/DASHBOARD_GUIDE.md](./docs/DASHBOARD_GUIDE.md). It also lists the genuine screenshots still to be captured; no placeholder images are presented as dashboard evidence.
 
 ## Analysis and validation coverage
