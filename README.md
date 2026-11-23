@@ -43,6 +43,7 @@ Banking-Analytics/
 ├── .github/workflows/
 │   └── python-tests.yml
 ├── docs/
+│   ├── DASHBOARD_GUIDE.md
 │   └── PROJECT_NOTES.md
 ├── .env.example
 ├── .gitignore
@@ -111,6 +112,10 @@ For a focused loan-outcome-by-duration check, run `sql/Loan_Outcome_Crosscheck.s
 ### 8. Open the Power BI report
 
 Download or clone the repository, then open `bank_analytics_Dashboard.pbix` in Power BI Desktop. A public Power BI Service link is not published in this README yet.
+
+## Dashboard documentation
+
+A page-by-page guide to the report, KPI formulas, slicer/filter caveats, historical-data interpretation, and reviewer walkthrough is available in [docs/DASHBOARD_GUIDE.md](./docs/DASHBOARD_GUIDE.md). It also lists the genuine screenshots still to be captured; no placeholder images are presented as dashboard evidence.
 
 ## Analysis and validation coverage
 
