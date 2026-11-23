@@ -609,7 +609,7 @@ LIMIT 20;
 
 -- Loan outcome by duration
 SELECT duration,
-       SUM(status_desc = 'Contract finished, no problems') AS finished_ok,
+       SUM(status_desc = 'Finished - Paid') AS finished_ok,
        SUM(is_bad_loan = 1)                                AS bad_loans,
        COUNT(*)                                            AS total_loans
 FROM v_loan
