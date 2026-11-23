@@ -1,8 +1,8 @@
 # Banking Analytics | Berka (PKDD'99) Dataset
 
-An end-to-end banking analytics portfolio project built around the historical Czech Bank (Berka / PKDD'99) dataset. The repository contains a Python cleaning and MySQL-loading pipeline, SQL validation queries, and the Power BI report file.
+An end-to-end banking analytics portfolio project built around the historical Czech Bank (Berka / PKDD'99) dataset. The repository contains a Python cleaning and MySQL-loading pipeline, SQL validation queries, automated Python regression checks, and a Power BI report.
 
-> **Project status:** The Power BI `.pbix` file is included in this repository. Python source syntax and regression checks are covered by GitHub Actions. Live MySQL execution and full reconciliation of report measures against SQL are not yet verified.
+> **Project status:** The project owner has completed the Power BI-to-MySQL cross-check and confirmed that the dashboard figures match the SQL results. Python source syntax and regression checks are covered by a successful GitHub Actions run. The cross-check is owner-confirmed; a machine-generated reconciliation log is not currently included in the repository.
 
 ## Project at a glance
 
@@ -13,7 +13,7 @@ An end-to-end banking analytics portfolio project built around the historical Cz
 | Database | MySQL 8.0+ |
 | SQL analysis | MySQL views, aggregations, data-quality and window-function checks |
 | BI / reporting | Microsoft Power BI |
-| Main deliverable | [Download the Power BI report](./bank_analytics_Dashboard.pbix) |
+| Main deliverable | [Open the Power BI report file](./bank_analytics_Dashboard.pbix) |
 
 ## Architecture
 
@@ -23,7 +23,7 @@ flowchart LR
     B --> C[(MySQL<br/>bank_analytics)]
     C --> D[SQL validation<br/>and analysis]
     C --> E[Power BI report<br/>PBIX]
-    D -. cross-check measures .-> E
+    D -. owner-confirmed cross-check .-> E
 ```
 
 The Python loader standardizes selected Czech labels, parses dates, derives client age and gender fields from the source birth-number field, applies duplicate/orphan and missing-value handling, and loads the resulting tables into MySQL. The SQL validation script defines five helper views: `v_account`, `v_client`, `v_trans`, `v_loan`, and `v_card`.
@@ -100,13 +100,13 @@ The tests cover date parsing and key category mappings without requiring a MySQL
 python -m unittest discover -s tests -v
 ```
 
-GitHub Actions runs these checks when relevant Python, test, dependency, or workflow files change. A successful run is required before treating the checks as verified.
+GitHub Actions runs these checks when relevant Python, test, dependency, or workflow files change. The latest recorded run completed successfully: [GitHub Actions run](https://github.com/bhupendra272003/Banking-Analytics/actions/runs/45009347913).
 
 ### 7. Run SQL validation
 
 Open `sql/Bank_Analytics_Dashboard_Validation.sql` in MySQL Workbench and execute Section 0 first to create the helper views. Then run the relevant page-wise validation queries. The script uses `bank_analytics`; confirm that this is the intended project database before execution.
 
-For a focused correction to the loan-outcome-by-duration check, run `sql/Loan_Outcome_Crosscheck.sql` after Section 0. It uses the same status labels produced by the Python loader.
+For a focused loan-outcome-by-duration check, run `sql/Loan_Outcome_Crosscheck.sql` after Section 0. It uses the same status labels produced by the Python loader.
 
 ### 8. Open the Power BI report
 
@@ -123,12 +123,14 @@ The SQL validation script includes:
 - Customer and regional analysis
 - Window-function examples, including rankings and running totals
 
+The project owner has manually compared the Power BI dashboard figures with the corresponding MySQL query outputs and confirmed that they match. This confirmation is recorded here as project-owner validation; no separate reconciliation export or execution transcript is currently committed.
+
 ## Known limitations and interpretation notes
 
-- Live execution against a MySQL instance and reconciliation against the Power BI report have not yet been verified.
-- The SQL source documents the **New vs Repeat Customers** calculation as an assumption because the exact Power BI DAX definition was not available during SQL preparation.
-- Percentage-like SQL outputs should be checked against the corresponding Power BI measure formatting.
+- The New vs Repeat Customers calculation is documented in the SQL source as an assumption; preserve that definition when interpreting the metric unless the exact Power BI DAX definition is added to the repository.
+- Percentage-like SQL outputs should be interpreted using the corresponding Power BI measure's formatting and denominator.
 - Dashboard screenshots and a public Power BI Service URL have not yet been added.
+- The historical dataset should be described as a portfolio/training dataset, not as current live banking data.
 
 ## Privacy and responsible sharing
 
@@ -136,9 +138,9 @@ This project uses a historical dataset for portfolio analysis. Do not add databa
 
 ## Next improvements
 
-- Add verified dashboard screenshots and page descriptions.
-- Execute the SQL validation script against the loaded MySQL database.
-- Reconcile the Power BI measures with the SQL outputs and document confirmed findings.
+- Add clear dashboard screenshots and page descriptions.
+- Add a small, reproducible reconciliation output or validation log (without credentials or sensitive data).
+- Document exact DAX definitions for any metrics currently described as assumptions.
 - Add a Power BI Service link only after public-sharing permissions and data privacy have been checked.
 
 ---
